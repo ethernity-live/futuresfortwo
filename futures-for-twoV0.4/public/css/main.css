@@ -1,0 +1,11 @@
+.bordered{
+    border:1px solid black !important;
+}
+#loading_image{
+    width:100px;
+    display:none;
+}
+.popover-content{
+	width: 270px;
+	text-align: justify;
+}

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DApp</title>
+</head>
+<body>
+    <div class="container ">
+        <h2 id="app_name"></h2>
+        <div id="data_network"></div>
+
+        <div class="text-center">
+            <img src="img/untitled-3.gif" id="loading_image" width="100">
+        </div>
+
+        <!-- Screen default -->
+        <section id="default" style="margin: 10px 0px;">
+            <div class="col-lg-12 col-md-12 col-sm-12" style="padding: 0px">
+            </div>
+        </section>
+
+        <!-- Screen-1 -->
+        <section id="Screen-1" style="margin: 10px 0px;display:none">
+            <h4>Place a bet</h4> 
+            <div class="col-lg-12 col-md-12 col-sm-12 well" style="padding: 0px">
+                 <div style="margin-bottom: 15px;padding: 10px;padding-left: 15px;" class="bg-info">
+                    <span id="infoParText"></span> 
+                    price on
+                    <span id="infoParFecha"></span>
+                    <span id="infoParPrecio" style="font-weight: bold;color: green;"> 0.00 </span>
+                    <img src="img/cargando.gif" id="loadingPrice" style="display:none;float:right;background: white;border-radius: 50%;padding: 5px;">
+                    <span style="float: right;">Fee <span id="fee"><span></span>
+                </div>
+                <form id="AddBet" role="form" novalidate>
+                  <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                    <label for="pair">select pair</label>
+                    <select name="pair" class="form-control" id="pair" onchange="changePar()" required data-required-error="You must select a pair of coins">
+                    </select>
+                    <div class="help-block with-errors"></div>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                    <label for="dirBet">Direction</label>
+                    <select name="dirBet" class="form-control" id="dirBet" required data-required-error="You must select the direction of the bet">
+                        <option value="true">UP</option>
+                        <option value="false">DOWN</option>
+                    </select>
+                    <div class="help-block with-errors"></div>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                    <label for="odds ">Odds</label>
+                    <input type="number" class="form-control" id="odds" name="odds" placeholder="Enter a value for the odds" required data-required-error="This field is required" min="0" max="1" step="0.5" >
+                    <div class="help-block with-errors"></div>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                    <label for="timeLimit">Time limit (In minutes)</label>
+                    <input type="number" class="form-control" id="timeLimit" name="timeLimit" value="20"  placeholder="Enter the duration of the bet" required data-required-error="This field is required" min="20" step="1" >
+                    <div class="help-block with-errors"></div>
+                  </div>
+                   <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                    <label for="cantBet ">Amount to bet</label>
+                    <input type="number" class="form-control" id="cantBet" name="cantBet" placeholder="Enter the amount you wish to bet" required data-required-error="This field is required" step="0.00000001" >
+                    <div class="help-block with-errors"></div>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                    <button type="submit" class="btn btn-success btn-block"  style="margin-top: 21px;">Place bet</button>
+                  </div>
+                </form>    
+            </div>
+        </section>
+
+        <!-- Screen-2 -->
+        <section id="Screen-2" style="margin: 10px 0px;display:none">
+            <h4>Current status of the bet</h4> 
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                    Time remaining for evaluation:
+                    <span class="text-danger">
+                        <i class="fas fa-hourglass-start"></i>
+                        <span id="counter2"></span>
+                    </span>
+                      (<label id="timeBet2"></label>)
+                </h3>
+              </div>
+              <div class="panel-body" id="datosBet2" style="padding-right: :0px;padding-left: 0px">
+                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Market:</label><br>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="marketBet2" style="color:#948484"></label>
+                    </div>
+                     <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">betting direction</label><br>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="directionBet2" style="color:#948484"></label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Total bet:</label><br>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="totalBet2"  style="color:#948484"></label>
+                    </div>
+                     <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Fee <span id="valorfee2"></span>:</label><br>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="feeBet2"  style="color:#948484"></label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Total to pay:</label><br>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="payBet2"  style="color:#948484"></label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Odds:</label><br>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="oddsBet2"  style="color:#948484"></label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Rate of the pair at evaluation:</label><br>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="rateBet2"  style="color:#948484"></label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Date of evaluation:</label>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="dateFirstBet2"  style="color:#948484"></label>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;"><a id="linkAPI2"></a></label>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 form-group">
+                        <h4 style="margin-left: 15px;">Amount to bet</h4>
+                        <form class="form-inline" novalidate id="reBet2">
+                           <div class="col-lg-2 col-md-2 col-sm-12 form-group">
+                            <label class="col-lg-12 col-md-12 col-sm-12" for="minbet2" style="padding-top: 8px;;font-weight: 900;">Minimum bet:</label>
+                          </div>
+                          <div class="col-lg-2 col-md-3 col-sm-12 form-group">
+                          <span class="form-control" id="minbet2"  style="color:#948484"></span>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                            <label for="exampleInputName2">Amount:</label>
+                            <input type="number" class="form-control" id="cantBet2" name="cantBet2" placeholder="Enter the amount you wish to bet again" required data-required-error="This field is required" min="0.0000001" step="0,00000001" >
+                            <div class="help-block with-errors"></div>
+                          </div>
+                          <button type="submit" id="buttonbet2" class="btn btn-success"></button>
+                        </form> 
+                    </div>
+              </div>
+            </div>
+        </section>
+
+        <!-- Screen-3 -->
+        <section id="Screen-3" style="margin: 10px 0px;display: none">
+            <h4>Current status of the bet</h4> 
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                    Time remaining for evaluation:
+                    <span class="text-danger">
+                        <i class="fas fa-hourglass-start"></i>
+                        <span id="counter"></span>
+                    </span>
+                      (<label id="timeBet"></label>)
+                </h3>
+              </div>
+              <div class="panel-body" id="datosBet" style="padding-right: :0px;padding-left: 0px">
+                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Market:</label><br>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="marketBet" style="color:#948484"></label>
+                    </div>
+                     <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Up bettor:</label><br>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="uptBett" style="color:#948484"></label>
+                    </div>
+                     <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Down bettor:</label><br>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="doBett" style="color:#948484"></label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Total bet:</label><br>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="totalBet"  style="color:#948484"></label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Fee <span id="valorfee"></span>:</label><br>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="feeBet"  style="color:#948484"></label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Total to pay:</label><br>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="payBet"  style="color:#948484"></label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Odds:</label><br>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="oddsBet"  style="color:#948484"></label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Rate of reference:</label><br>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="rateBet"  style="color:#948484"></label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Date of first evaluation:</label>
+                        <label class="col-lg-12 col-md-12 col-sm-12" id="dateFirstBet"  style="color:#948484"></label>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;"><a id="linkAPI"></a></label>
+                    </div>
+                     <div class="col-lg-12 col-md-12 col-sm-12" id="errorFinalizarA" style="display:none">
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 form-group" id="reBetDiv">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <label id="mensaje" class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;width: auto;padding: 10px;"></label>
+                        </div>
+                        <h4 style="margin-left: 15px;">Bet again</h4>
+                        <form class="form-inline" novalidate id="reBet">
+                          <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                            <label for="exampleInputName2">Amount:</label>
+                            <input type="number" class="form-control" id="cantBetAgain" name="cantBetAgain" placeholder="Enter the amount you wish to bet again" required data-required-error="This field is required" min="0.00001" step="0,00000001" >
+                            <div class="help-block with-errors"></div>
+                          </div>
+                          <button type="submit" id="rebetbutton" class="btn btn-success">Bet again</button>
+                        </form> 
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 form-group" id="results" style="display: none">
+                        <h4 style="margin-left: 15px;">Results of the bet</h4>
+                        <div class="col-lg-12 col-md-12 col-sm-12 form-group">
+                            <label id="ganPer" class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;padding: 10px;"></label>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                            <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Rate at limit:</label><br>
+                            <label class="col-lg-12 col-md-12 col-sm-12" id="Final_cup"  style="color:#948484"></label>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                            <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;">Winner got:</label><br>
+                            <label class="col-lg-12 col-md-12 col-sm-12" id="prize"  style="color:#948484"></label>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 form-group" id="divCobrar">
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <label class="col-lg-12 col-md-12 col-sm-12" style="font-weight: 900;"><a id="linkAPIPirceFinal"></a></label>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12" id="resultFailet">
+                        </div>
+                    <div>
+              </div>
+            </div>
+        </section>
+
+
+    </div>
+
+    <!--Modal para enviar mensajes-->
+    <div class="modal fade" tabindex="-1" id="myModal" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title"></h4>
+          </div>
+          <div class="modal-body">
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+   <!--Modal para espera deminadpo-->
+    <div class="modal fade" tabindex="-1" id="ModalEspera" role="dialog" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <img src="img/untitled-3.gif" style="width: 50px;position: absolute;margin-left: 70px;top:12px">
+            <h4 class="modal-title"></h4>
+          </div>
+          <div class="modal-body">
+            <p id="mensajeLoa"></p>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <script src="jquery/dist/jquery.min.js"></script>
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+    <script src="js/validator.js"></script>
+    <script src="js/configv0.4.js"></script>
+    <script src="js/appv0.4.js"></script>
+</body>
+</html>
